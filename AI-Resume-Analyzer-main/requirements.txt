@@ -1,0 +1,12 @@
+streamlit==1.38.0
+google-generativeai==0.8.3
+PyPDF2==3.0.1
+Pillow==10.4.0
+## cd "C:\Users\HEET JAIN\Downloads\AI-Resume-Analyzer-main (1)\AI-Resume-Analyzer-main"
+##pip install -r requirements.txt
+## cd "C:\Users\HEET JAIN\Downloads\AI-Resume-Analyzer-main (1)\AI-Resume-Analyzer-main"
+##streamlit run resume_analyzer.py
+##https://aistudio.google.com/api-keys
+AIzaSyC0CCvwf4OWS18Ov5gc1qwJT6_DPvfxxHg
+
+# An AI Intern (Generative AI) is responsible for assisting in image generation tasks using tools like Stable Diffusion and ComfyUI. The role involves designing workflows, performing prompt engineering, and generating high-quality visual outputs. The intern also helps in basic model fine-tuning, testing, and evaluating results to improve performance. Additionally, the intern documents processes and learns practical applications of Generative AI. This role is suitable for beginners with a basic understanding of Artificial Intelligence and an interest in creative AI technologies.
