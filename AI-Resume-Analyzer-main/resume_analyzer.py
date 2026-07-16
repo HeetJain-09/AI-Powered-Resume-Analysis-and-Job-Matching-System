@@ -37,15 +37,12 @@ def load_ai(api_key):
 
 # Safe AI call with retry
 def get_ai_response(model, prompt):
-    for i in range(3):
-        try:
-            return model.generate_content(prompt).text
-        except:
-            if i < 2: 
-                time.sleep(2)
-            else:
-                return "❌ API error - check quota or key"
-    return "❌ Try again later"
+    try:
+        response = model.generate_content("Say only: API is working")
+        return response.text
+    except Exception as e:
+        import traceback
+        return f"{type(e).__name__}\n\n{str(e)}"
 
 # Main title
 st.title("🔍 AI Resume Matcher")
