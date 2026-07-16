@@ -1,12 +1,13 @@
 import streamlit as st
 import PyPDF2
 import google.generativeai as genai
+import time
 
-st.set_page_config(page_title="AI Resume Matcher",page_icon="📄",layout="wide")
+st.set_page_config(page_title="Resume Checker",page_icon="📄",layout="wide")
 
-if "resume_text" not in st.session_state: st.session_state.resume_text=""
-if "result" not in st.session_state: st.session_state.result=""
-if "chat_history" not in st.session_state: st.session_state.chat_history=[]
+if 'resume_text' not in st.session_state: st.session_state.resume_text=""
+if 'result' not in st.session_state: st.session_state.result=""
+if 'chat_history' not in st.session_state: st.session_state.chat_history=[]
 
 st.markdown("""
 <style>
@@ -15,9 +16,9 @@ st.markdown("""
 """,unsafe_allow_html=True)
 
 def extract_pdf(pdf_file):
-    reader=PyPDF2.PdfReader(pdf_file)
+    pdf_reader=PyPDF2.PdfReader(pdf_file)
     text=""
-    for page in reader.pages:
+    for page in pdf_reader.pages:
         if page.extract_text():
             text+=page.extract_text()+"\n"
     return text
@@ -28,14 +29,19 @@ def load_ai(api_key):
     return genai.GenerativeModel("gemini-2.0-flash")
 
 def get_ai_response(model,prompt):
-    try:
-        response=model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        return f"❌ Gemini Error:\n\n{str(e)}"
+    for i in range(3):
+        try:
+            response=model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            if i<2:
+                time.sleep(2)
+            else:
+                return f"❌ Gemini Error:\n{e}"
+    return "❌ Try again later"
 
 st.title("🔍 AI Resume Matcher")
-st.markdown("---")
+st.divider()
 
 with st.sidebar:
     st.header("⚙️ Setup")
@@ -43,11 +49,11 @@ with st.sidebar:
     if api_key:
         try:
             st.session_state.model=load_ai(api_key)
-            st.success("✅ Ready!")
-        except Exception:
+            st.success("✅ Gemini Ready")
+        except:
             st.error("❌ Invalid API Key")
 
-col1,col2=st.columns([1,1])
+col1,col2=st.columns(2)
 
 with col1:
     st.subheader("📄 Upload Resume")
@@ -56,7 +62,7 @@ with col1:
         st.session_state.resume_text=extract_pdf(pdf_file)
         st.success("✅ Extracted!")
         with st.expander("Preview"):
-            st.text(st.session_state.resume_text[:500])
+            st.text_area("",st.session_state.resume_text[:500])
 
 with col2:
     st.subheader("💼 Job Details")
@@ -65,12 +71,9 @@ with col2:
 
 if st.button("🚀 ANALYZE RESUME"):
     model=st.session_state.get("model")
-
     if model and st.session_state.resume_text and job_desc:
         with st.spinner("AI analyzing..."):
             prompt=f"""
-Analyze this resume for the job.
-
 Job Title:
 {job_title}
 
@@ -81,11 +84,11 @@ Resume:
 {st.session_state.resume_text[:2000]}
 
 Give:
-1. MATCH SCORE (0-100%)
-2. STRENGTHS
-3. MISSING SKILLS
-4. IMPROVEMENT SUGGESTIONS
-5. FINAL RECOMMENDATION
+1. Match Score (0-100%)
+2. Strengths
+3. Missing Skills
+4. Improvement Suggestions
+5. Final Recommendation
 """
             st.session_state.result=get_ai_response(model,prompt)
     else:
@@ -99,21 +102,16 @@ with tab1:
         st.markdown(f'<div class="result-box">{st.session_state.result}</div>',unsafe_allow_html=True)
 
 with tab2:
-    st.markdown("### 💬 Ask about your analysis")
-
+    st.markdown("### 💬 Ask about Analysis")
     model=st.session_state.get("model")
-
     if model and st.session_state.result:
-
         for msg in st.session_state.chat_history:
             with st.chat_message(msg["role"]):
                 st.write(msg["text"])
 
-        user_q=st.chat_input("Ask anything about analysis...")
-
+        user_q=st.chat_input("Ask anything...")
         if user_q:
             st.session_state.chat_history.append({"role":"user","text":user_q})
-
             with st.chat_message("user"):
                 st.write(user_q)
 
@@ -129,11 +127,7 @@ Question:
 
 Answer clearly.
 """
-
             with st.chat_message("assistant"):
                 answer=get_ai_response(model,prompt)
                 st.write(answer)
                 st.session_state.chat_history.append({"role":"assistant","text":answer})
-
-    else:
-        st.info("Analyze resume first.")
