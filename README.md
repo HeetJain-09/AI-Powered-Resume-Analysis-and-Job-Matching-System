@@ -3,10 +3,9 @@
 > An AI-powered web application that analyzes resumes against job descriptions and provides intelligent insights such as match score, strengths, missing skills, and personalized improvement recommendations.
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
-![Streamlit](https://img.shields.io/badge/Streamlit-App-red?logo=streamlit)
-![Gemini AI](https://img.shields.io/badge/Google-Gemini%202.5%20Flash-orange)
+![Streamlit](https://img.shields.io/badge/Streamlit-Web%20App-red?logo=streamlit)
+![Gemini AI](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-orange)
 ![PyPDF2](https://img.shields.io/badge/PDF-PyPDF2-green)
-![AI](https://img.shields.io/badge/AI-Generative%20AI-purple)
 ![GitHub](https://img.shields.io/badge/Version%20Control-GitHub-black?logo=github)
 
 ---
@@ -15,15 +14,18 @@
 
 The **AI-Powered Resume Analysis & Job Matching System** is a Generative AI-based application designed to help candidates understand how well their resume aligns with a specific job description.
 
-The system allows users to upload a resume in PDF format, enter a target job title and job description, and receive an AI-generated evaluation.
+The system allows users to:
 
-Using **Google Gemini 2.5 Flash**, the application analyzes the candidate's resume and identifies:
-
-* 📊 Job Match Score
-* ✅ Resume Strengths
-* ❌ Missing Skills
-* 💡 Resume Improvement Suggestions
-* 💬 AI-powered Resume Assistant
+* Upload a resume in PDF format
+* Enter a target job title
+* Enter a complete job description
+* Analyze the resume using Google Gemini AI
+* Generate a job match score
+* Identify resume strengths
+* Detect missing skills
+* Receive personalized improvement recommendations
+* Ask follow-up questions through an AI Resume Assistant
+* Download the generated analysis report
 
 The project demonstrates the practical application of **Generative AI, prompt engineering, API integration, PDF processing, and Streamlit application development**.
 
@@ -31,19 +33,19 @@ The project demonstrates the practical application of **Generative AI, prompt en
 
 ## 🎯 Problem Statement
 
-In today's competitive job market, candidates often apply to multiple positions without knowing how closely their resumes match the requirements of a particular role.
+Candidates often apply for multiple jobs without knowing how closely their resume matches the requirements of a particular role.
 
-Candidates may struggle to:
+They may struggle to:
 
-* Evaluate resume relevance for a specific job role
-* Identify skills missing from their resume
+* Evaluate resume relevance for a specific job
+* Identify missing skills
 * Understand their strengths and weaknesses
-* Optimize resumes according to job requirements
-* Tailor their resume for different job applications
+* Optimize their resume for different job roles
+* Tailor their resume according to job requirements
 
 Manual resume evaluation can be time-consuming and subjective.
 
-Therefore, this project aims to provide an **automated AI-powered solution** that compares resume content with job requirements and generates actionable feedback.
+Therefore, this project provides an **AI-powered solution for resume analysis and job matching** that generates actionable feedback based on the resume and target job description.
 
 ---
 
@@ -63,42 +65,41 @@ Users can provide:
 * Target Job Title
 * Complete Job Description
 
-The system uses these inputs to evaluate the relevance of the uploaded resume.
+The system uses these inputs to evaluate how relevant the uploaded resume is for the selected role.
 
 ### 🧠 AI-Powered Resume Evaluation
 
-Google's **Gemini 2.5 Flash** model analyzes the resume and job description to generate:
+Using **Google Gemini 2.5 Flash**, the application generates:
 
-* Match Score
-* Candidate Strengths
-* Missing Skills
-* Improvement Recommendations
+* 📊 Job Match Score
+* ✅ Resume Strengths
+* ❌ Missing Skills
+* 💡 Improvement Recommendations
 
 ### 📊 Match Analysis
 
-The application provides an AI-generated compatibility score between the candidate profile and the target job.
-
-The analysis considers factors such as:
+The application provides an AI-generated compatibility score based on factors such as:
 
 * Skills
 * Experience
+* Qualifications
 * Job requirements
-* Relevant qualifications
-* Resume content
+* Relevant resume content
 
 ### 💡 Personalized Recommendations
 
-The AI provides suggestions that can help candidates improve their resume for the selected job role.
+The system provides suggestions to help candidates improve and tailor their resumes according to the target job.
 
 ### 💬 Interactive AI Resume Assistant
 
-The application includes a chatbot that allows users to ask follow-up questions about:
+Users can ask follow-up questions about:
 
-* Resume
+* Resume content
 * Job description
-* Analysis results
+* Match score
 * Missing skills
-* Career-related improvements
+* Resume improvements
+* Career-related suggestions
 
 ### 📥 Download Analysis Report
 
@@ -109,52 +110,62 @@ Users can download the generated resume analysis as a text report for future ref
 ## 🏗️ System Architecture
 
 ```text
-                    ┌─────────────────────┐
-                    │       User          │
-                    └──────────┬──────────┘
+                    ┌──────────────────────┐
+                    │        User          │
+                    │ Resume + Job Details │
+                    └──────────┬───────────┘
                                │
                                ▼
-                    ┌─────────────────────┐
-                    │  Streamlit Web UI   │
-                    └──────────┬──────────┘
+                    ┌──────────────────────┐
+                    │    Streamlit Web UI  │
+                    └──────────┬───────────┘
                                │
-                    ┌──────────▼──────────┐
-                    │   Resume PDF Upload │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │       PyPDF2        │
-                    │  Text Extraction    │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-              ┌────────────────────────────────┐
-              │ Resume + Job Description       │
-              │ + Job Title                    │
-              └───────────────┬────────────────┘
+                ┌──────────────┴──────────────┐
+                │                             │
+                ▼                             ▼
+       ┌──────────────────┐         ┌──────────────────┐
+       │   Resume PDF     │         │ Job Description  │
+       │     Upload       │         │      Input       │
+       └────────┬─────────┘         └────────┬─────────┘
+                │                            │
+                ▼                            │
+       ┌──────────────────┐                  │
+       │     PyPDF2       │                  │
+       │  Text Extraction │                  │
+       └────────┬─────────┘                  │
+                │                            │
+                └─────────────┬──────────────┘
+                              ▼
+                   ┌──────────────────────┐
+                   │   Prompt Engineering │
+                   │ Resume + Job Context │
+                   └──────────┬───────────┘
                               │
                               ▼
-                    ┌─────────────────────┐
-                    │ Google Gemini API   │
-                    │ Gemini 2.5 Flash    │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   AI Analysis        │
-                    ├─────────────────────┤
-                    │ Match Score          │
-                    │ Strengths            │
-                    │ Missing Skills       │
-                    │ Improvement Tips     │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Results + AI Chat    │
-                    └─────────────────────┘
+                   ┌──────────────────────┐
+                   │   Google Gemini AI   │
+                   │   Gemini 2.5 Flash   │
+                   └──────────┬───────────┘
+                              │
+                              ▼
+              ┌──────────────────────────────┐
+              │        AI Analysis           │
+              │                              │
+              │ • Match Score                │
+              │ • Strengths                  │
+              │ • Missing Skills             │
+              │ • Improvement Suggestions    │
+              └──────────────┬───────────────┘
+                             │
+                             ▼
+                   ┌──────────────────────┐
+                   │ Results + AI Chat    │
+                   └──────────────────────┘
 ```
+
+A detailed architecture reference is available in:
+
+`assets/architecture.md`
 
 ---
 
@@ -166,13 +177,13 @@ The user uploads a resume in PDF format through the Streamlit interface.
 
 ### Step 2 — Extract Resume Text
 
-The application uses **PyPDF2** to extract textual information from the uploaded PDF.
+**PyPDF2** extracts textual information from the uploaded PDF.
 
 ### Step 3 — Enter Job Information
 
-The user enters:
+The user provides:
 
-* Job Title
+* Target Job Title
 * Job Description
 
 ### Step 4 — Send Data to Gemini
@@ -181,25 +192,31 @@ The extracted resume content and job requirements are provided to the **Gemini 2
 
 ### Step 5 — AI Analysis
 
-Gemini analyzes the relationship between the candidate's profile and the target job requirements.
+Gemini analyzes the relationship between the candidate's resume and the target job requirements.
 
 ### Step 6 — Generate Insights
 
 The system generates:
 
 ```text
+Resume
+   +
+Job Description
+   ↓
+AI Analysis
+   ↓
 Match Score
-     ↓
+   ↓
 Strengths
-     ↓
+   ↓
 Missing Skills
-     ↓
+   ↓
 Improvement Suggestions
 ```
 
 ### Step 7 — Interactive Chat
 
-The user can ask additional questions about the analysis through the built-in AI assistant.
+After analysis, users can ask additional questions through the built-in AI Resume Assistant.
 
 ---
 
@@ -211,7 +228,7 @@ The user can ask additional questions about the analysis through the built-in AI
 | **Streamlit**               | Web application interface           |
 | **Google Gemini 2.5 Flash** | Generative AI analysis              |
 | **google-generativeai**     | Gemini API integration              |
-| **PyPDF2**                  | Resume PDF text extraction          |
+| **PyPDF2**                  | PDF text extraction                 |
 | **HTML/CSS**                | UI customization                    |
 | **Git & GitHub**            | Version control and project hosting |
 | **Visual Studio Code**      | Development environment             |
@@ -237,13 +254,13 @@ The model is instructed to generate structured insights including:
 3. Missing Skills
 4. Resume Improvement Suggestions
 
-This approach demonstrates how Large Language Models can be integrated into practical career-oriented applications.
+This demonstrates how Large Language Models can be integrated into a practical career-oriented application.
 
 ---
 
 ## 📊 Sample Analysis Output
 
-The system generates an analysis similar to:
+Example:
 
 ```text
 MATCH SCORE: 82%
@@ -254,12 +271,12 @@ MATCH SCORE: 82%
 - Experience with machine learning
 - Good technical project exposure
 
-❌ MISSING
+❌ MISSING SKILLS
 - SQL optimization
 - Advanced Excel
 - Business intelligence tools
 
-➤ FIXES
+💡 IMPROVEMENT SUGGESTIONS
 - Add SQL-based projects
 - Highlight measurable project outcomes
 - Include relevant analytical tools
@@ -272,7 +289,7 @@ MATCH SCORE: 82%
 
 ## 💬 AI Resume Assistant
 
-After the resume analysis is generated, users can interact with the built-in chatbot.
+The application includes an interactive chatbot that allows users to ask contextual questions after the resume analysis.
 
 Example questions:
 
@@ -290,52 +307,41 @@ What projects should I add?
 How can I make my resume more ATS-friendly?
 ```
 
-The chatbot uses the generated analysis and relevant resume information to provide contextual responses.
+The assistant uses the relevant resume information and generated analysis to provide contextual responses.
 
 ---
 
-
 ## 🎥 Project Demo
 
-A complete walkthrough of the application is available below.
+A complete walkthrough of the application is available in the project demo video.
 
-### ▶️ Demo Video
+### Demo Includes
 
-https://drive.google.com/file/d/1THIFxvg2eZzNVXhtbgEWB-wj28K1uHFx/view
+1. Resume PDF upload
+2. Resume text extraction
+3. Job title and job description input
+4. Gemini-powered resume analysis
+5. Match score generation
+6. Strength identification
+7. Missing skill detection
+8. Improvement recommendations
+9. Interactive AI Resume Assistant
 
-The demonstration covers:
-
-1. Gemini API configuration
-2. Resume PDF upload
-3. Resume text extraction
-4. Job title and job description input
-5. AI-powered resume analysis
-6. Match score generation
-7. Strength identification
-8. Missing skill detection
-9. Improvement recommendations
-10. Interactive AI chatbot
+> **Security Note:** API keys and other credentials should never be included in public screenshots, videos, source code, or GitHub commits.
 
 ---
 
 ## 📑 Project Presentation
 
-The complete project presentation is available in the `docs` folder.
+Project presentation files can be added to the `docs/` folder when available.
 
-### Presentation
+Recommended structure:
 
-* [📄 Project Presentation – PDF](./docs/AI_Resume_Analyzer_Presentation.pdf)
-* [📊 Project Presentation – PPTX](./docs/AI_Resume_Analyzer_Presentation.pptx)
-
-The presentation covers:
-
-* Problem Statement
-* System Approach
-* Technology Stack
-* Algorithm & Working
-* Deployment
-* Results
-* Future Scope
+```text
+docs/
+├── AI_Resume_Analyzer_Presentation.pdf
+└── AI_Resume_Analyzer_Presentation.pptx
+```
 
 ---
 
@@ -344,13 +350,13 @@ The presentation covers:
 ### 1. Clone the Repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/HeetJain-09/AI-Powered-Resume-Analysis-and-Job-Matching-System.git
 ```
 
 ### 2. Navigate to the Project
 
 ```bash
-cd AI-RESUME-ANALYZER
+cd AI-Powered-Resume-Analysis-and-Job-Matching-System
 ```
 
 ### 3. Create a Virtual Environment
@@ -381,67 +387,78 @@ pip install -r requirements.txt
 
 This application requires a **Google Gemini API key**.
 
-You can obtain an API key through **Google AI Studio**.
+The application accepts the API key through the Streamlit interface.
 
-After obtaining the key, enter it into the **Gemini API Key** field in the application's sidebar.
+### ⚠️ Security
 
-### ⚠️ Security Warning
+**Never commit your real API key to GitHub.**
 
-**Never upload your API key to GitHub.**
-
-Do not hard-code the API key inside Python files or commit it to the repository.
-
-For example, avoid:
+Avoid hard-coding secrets such as:
 
 ```python
 api_key = "YOUR_REAL_API_KEY"
 ```
 
-The current application accepts the API key through the Streamlit interface, helping prevent the key from being stored directly in the source code.
+Do not upload:
+
+* API keys
+* Passwords
+* Authentication tokens
+* Private credentials
+* Sensitive personal information
+
+For public demonstrations, use sample or anonymized resume data.
 
 ---
 
 ## ▶️ Running the Application
 
-Start the Streamlit application using:
+Run the Streamlit application using:
 
 ```bash
 streamlit run resume_analyzer.py
 ```
 
-After starting the application, Streamlit will provide a local URL similar to:
+After starting the application, open the local Streamlit URL shown in the terminal, usually:
 
 ```text
 http://localhost:8501
 ```
-
-Open the URL in your web browser.
 
 ---
 
 ## 📁 Project Structure
 
 ```text
-AI-RESUME-ANALYZER/
+AI-Powered-Resume-Analysis-and-Job-Matching-System/
 │
-├── resume_analyzer.py
-├── requirements.txt
-├── README.md
-├── .gitignore
-├── LICENSE
+├── .devcontainer/
+│
+├── AI-Resume-Analyzer-main/
+│   └── resume_analyzer.py
 │
 ├── assets/
-│   ├── project-banner.png
-│   └── architecture.png
+│   └── architecture.md
+│
+├── .gitignore
+├── LICENSE
+├── README.md
+└── requirements.txt
+```
+
+### Optional Portfolio Assets
+
+The repository can also include:
+
+```text
+├── demo/
+│   └── Resume_Analyzer_GitHub.mp4
 │
 ├── screenshots/
 │   ├── home.png
 │   ├── resume-upload.png
 │   ├── analysis-results.png
 │   └── chatbot.png
-│
-├── demo/
-│   └── demo.mp4
 │
 └── docs/
     ├── AI_Resume_Analyzer_Presentation.pdf
@@ -457,16 +474,16 @@ AI-RESUME-ANALYZER/
 **Edunet Foundation — Remote**
 **January 2026 – February 2026**
 
-During the internship, this project was developed as a practical application of Artificial Intelligence and Generative AI concepts.
+This project was developed during an Artificial Intelligence and Machine Learning internship as a practical application of Generative AI concepts.
 
-Key contributions included:
+### Key Contributions
 
-* Developed an AI-powered Resume Analysis and Job Matching System using Python, Streamlit, and Google Gemini 2.5 Flash API.
+* Developed an AI-powered Resume Analysis and Job Matching System using Python, Streamlit, and Google Gemini API.
 * Built an end-to-end application to extract resume content from PDF files and evaluate candidate profiles against job descriptions.
-* Implemented AI-driven resume evaluation for match scoring, missing-skill detection, strengths identification, and personalized improvement recommendations.
-* Integrated an interactive AI chatbot for resume and career-related queries.
+* Implemented AI-driven resume evaluation for match scoring, strengths identification, missing-skill detection, and personalized improvement recommendations.
+* Integrated an interactive AI Resume Assistant for resume and career-related queries.
 * Applied prompt engineering and API integration techniques.
-* Developed a production-style AI web application under industry mentorship.
+* Developed a practical AI web application under industry mentorship.
 
 ---
 
@@ -491,15 +508,15 @@ Through this project, the following concepts were practically implemented:
 
 ## 🚀 Future Enhancements
 
-The project can be extended with additional features such as:
+Potential future improvements include:
 
 * 🎯 ATS keyword analysis
 * 📑 Resume section-wise scoring
-* 🔎 Automatic job recommendation
+* 🔎 Automatic job recommendations
 * 📝 AI-powered resume rewriting
 * 📊 Skill-gap visualization
 * 🔗 LinkedIn profile integration
-* 📚 Skill/course recommendations
+* 📚 Skill and course recommendations
 * 📈 Multiple job comparison
 * 📄 Professional resume generation
 * ☁️ Cloud deployment
@@ -527,7 +544,7 @@ Users should avoid uploading resumes containing highly sensitive personal inform
 
 The generated match score is an **AI-generated estimate**, not an official ATS score or hiring decision.
 
-Results can vary depending on:
+Results may vary depending on:
 
 * Resume quality
 * Job description quality
@@ -543,9 +560,7 @@ The system should therefore be used as a **resume improvement and job-matching a
 
 The system provides candidates with a quick way to understand the alignment between their resume and a target job description.
 
-It helps users:
-
-**Understand → Identify → Improve → Tailor**
+The overall workflow can be summarized as:
 
 ```text
 Resume
@@ -568,14 +583,14 @@ Better Resume
 ## 🏆 Project Highlights
 
 * 🤖 Generative AI-powered application
-* 🧠 Gemini 2.5 Flash integration
+* 🧠 Google Gemini 2.5 Flash integration
 * 📄 Automated PDF resume processing
 * 📊 AI-based job matching
 * 💡 Personalized recommendations
-* 💬 Interactive AI chatbot
+* 💬 Interactive AI Resume Assistant
 * 🌐 Streamlit web interface
 * 🔌 Google Gemini API integration
-* 🐍 Python-based backend
+* 🐍 Python-based application
 * 📚 Developed during AI & ML internship
 
 ---
@@ -586,17 +601,12 @@ Better Resume
 
 **Artificial Intelligence & Machine Learning Enthusiast**
 
-### Project
+**Project:** AI-Powered Resume Analysis & Job Matching System
 
-**AI-Powered Resume Analysis & Job Matching System**
-
-Developed during **AI & Machine Learning Internship at Edunet Foundation**.
+Developed during an **AI & Machine Learning Internship at Edunet Foundation**.
 
 ---
 
 ## ⭐ Support
 
 If you find this project useful, consider giving the repository a ⭐ on GitHub.
-
----
-
